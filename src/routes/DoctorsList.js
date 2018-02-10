@@ -3,7 +3,7 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
 
-const Home = ({ data: { allDoctors, loading } }) => (
+const DoctorsList = ({ data: { allDoctors, loading } }) => (
   <div>
     {loading ? (
       <div>loading</div>
@@ -16,7 +16,7 @@ const Home = ({ data: { allDoctors, loading } }) => (
   </div>
 );
 
-Home.propTypes = {
+DoctorsList.propTypes = {
   data: PropTypes.shape({
     allDoctors: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.number,
@@ -34,4 +34,4 @@ const getAllDoctors = gql`
     }
   }
 `;
-export default graphql(getAllDoctors)(Home);
+export default graphql(getAllDoctors)(DoctorsList);
