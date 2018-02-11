@@ -1,16 +1,11 @@
 import React from 'react';
-import { withFormik } from 'formik';
-import { graphql, compose } from 'react-apollo';
 import { Button, Form, Header } from 'semantic-ui-react';
-import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
-import PropTypes from './PropTypes';
-import { createDoctorMutation } from './actions';
-
-const CreateDoctor = ({
-  values, handleChange, handleBlur, handleSubmit,
+const CreateDoctorForm = ({
+  values, handleChange, handleBlur, handleSubmit, className,
 }) => (
-  <Wrapper>
+  <div className={className}>
     <Header as="h1">Добавить доктора</Header>
     <Form>
       <Form.Field>
@@ -71,30 +66,26 @@ const CreateDoctor = ({
       </Form.Field>
       <Button onClick={handleSubmit}>Сохранить</Button>
     </Form>
-  </Wrapper>
+  </div>
 );
 
-const Wrapper = styled.div`
-  max-width: 600px;
-  margin: 50px auto;
-`;
+CreateDoctorForm.defaultProps = {
+  className: '',
+};
 
-CreateDoctor.propTypes = PropTypes;
+CreateDoctorForm.propTypes = {
+  values: PropTypes.shape({
+    name: PropTypes.string,
+    familyName: PropTypes.string,
+    patronymic: PropTypes.string,
+    speciality: PropTypes.string,
+    email: PropTypes.string,
+    password: PropTypes.string,
+  }).isRequired,
+  handleBlur: PropTypes.func.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  className: PropTypes.string,
+};
 
-export default compose(
-  graphql(createDoctorMutation),
-  withFormik({
-    mapPropsToValues: () => ({
-      name: '',
-      familyName: '',
-      patronymic: '',
-      speciality: '',
-      email: '',
-      password: '',
-    }),
-    handleSubmit: async (values, { props: { mutate, history } }) => {
-      await mutate({ variables: values });
-      history.push('/doctors/list');
-    },
-  }),
-)(CreateDoctor);
+export default CreateDoctorForm;
