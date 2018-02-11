@@ -1,11 +1,12 @@
 import React from 'react';
 import { withFormik } from 'formik';
-import { compose } from 'react-apollo';
+import { compose, graphql } from 'react-apollo';
 import { Button, Form, Header } from 'semantic-ui-react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import gql from 'graphql-tag';
 
-const CreateDoctor = ({
+const Login = ({
   values, handleChange, handleBlur, handleSubmit,
 }) => (
   <Wrapper>
@@ -41,7 +42,7 @@ const Wrapper = styled.div`
   margin: 50px auto;
 `;
 
-CreateDoctor.propTypes = {
+Login.propTypes = {
   values: PropTypes.shape({
     email: PropTypes.string,
     password: PropTypes.string,
@@ -51,14 +52,29 @@ CreateDoctor.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
 };
 
-export default compose(withFormik({
-  mapPropsToValues: () => ({
-    email: '',
-    password: '',
+const loginMutation = gql`
+  mutation($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      ok
+      token
+      refreshToken
+      errors {
+        message
+      }
+    }
+  }
+`;
+
+export default compose(
+  graphql(loginMutation),
+  withFormik({
+    mapPropsToValues: () => ({
+      email: '',
+      password: '',
+    }),
+    handleSubmit: async (values, { props: { mutate } }) => {
+      const response = await mutate({ variables: values });
+      console.log(response);
+    },
   }),
-  handleSubmit: async (values) => {
-    console.log(values);
-    // await mutate({ variables: values });
-    // history.push('/doctors/list');
-  },
-}))(CreateDoctor);
+)(Login);
