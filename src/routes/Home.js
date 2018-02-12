@@ -18,5 +18,10 @@ export default () => (
         Login
       </Link>
     </li>
+    <li>
+      <Link to="/patients/add" href="/patients/add">
+        Patient Add
+      </Link>
+    </li>
   </ul>
 );
