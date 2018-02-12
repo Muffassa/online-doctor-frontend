@@ -5,6 +5,7 @@ import { Button, Form, Header } from 'semantic-ui-react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
+import Cookies from 'js-cookie';
 
 const Login = ({
   values, handleChange, handleBlur, handleSubmit,
@@ -73,8 +74,22 @@ export default compose(
       password: '',
     }),
     handleSubmit: async (values, { props: { mutate } }) => {
-      const response = await mutate({ variables: values });
-      console.log(response);
+      const {
+        data: {
+          login: {
+            ok, errors, refreshToken, token,
+          },
+        },
+      } = await mutate({
+        variables: values,
+      });
+
+      if (ok) {
+        Cookies.set('token', token);
+        Cookies.set('refreshToken', refreshToken);
+      } else {
+        console.log(errors);
+      }
     },
   }),
 )(Login);

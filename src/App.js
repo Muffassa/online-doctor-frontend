@@ -8,7 +8,7 @@ import 'semantic-ui-css/semantic.min.css';
 import Router from './routes';
 
 const client = new ApolloClient({
-  link: new HttpLink({ uri: 'http://localhost:8081/graphql' }),
+  link: new HttpLink({ uri: 'http://localhost:8081/graphql', credentials: 'include' }),
   cache: new InMemoryCache(),
 });
 
