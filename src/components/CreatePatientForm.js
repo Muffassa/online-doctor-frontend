@@ -6,7 +6,7 @@ const CreatePatientForm = ({
   values, handleChange, handleBlur, handleSubmit, className,
 }) => (
   <div className={className}>
-    <Header as="h1">Добавить пациента</Header>
+    <Header as="h1">Добавить пациента </Header>
     <Form>
       <Form.Field>
         <input
