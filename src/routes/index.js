@@ -7,6 +7,7 @@ import CreateDoctor from './CreateDoctor';
 import CreatePatient from './CreatePatient';
 import Login from './Login';
 import Chat from './Chat';
+import PrivateRoute from './PrivateRoute';
 
 export default () => (
   <Router>
@@ -16,7 +17,7 @@ export default () => (
       <Route path="/doctors/add" component={CreateDoctor} />
       <Route path="/patients/add" component={CreatePatient} />
       <Route path="/login" component={Login} />
-      <Route path="/chat/:patientId?" component={Chat} />
+      <PrivateRoute path="/chat/:patientId?" component={Chat} />
     </div>
   </Router>
 );

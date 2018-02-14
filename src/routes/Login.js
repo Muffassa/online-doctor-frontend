@@ -73,7 +73,7 @@ export default compose(
       email: '',
       password: '',
     }),
-    handleSubmit: async (values, { props: { mutate } }) => {
+    handleSubmit: async (values, { props: { mutate, history } }) => {
       const {
         data: {
           login: {
@@ -87,6 +87,7 @@ export default compose(
       if (ok) {
         Cookies.set('token', token);
         Cookies.set('refreshToken', refreshToken);
+        history.push('/chat');
       } else {
         console.log(errors);
       }
