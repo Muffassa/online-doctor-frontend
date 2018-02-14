@@ -25,9 +25,7 @@ export const createDoctorMutation = gql`
       speciality: $speciality
       email: $email
       password: $password
-    ) {
-      id
-    }
+    )
   }
 `;
 
