@@ -36,7 +36,7 @@ export default class ChatLayout extends Component {
   renderMessage = (message) => {
     const { match: { params: { patientId } } } = this.props;
 
-    return message.senderId === patientId ? (
+    return message.senderId === parseInt(patientId, 10) ? (
       <LeftMessage key={message.id}>{message.text}</LeftMessage>
     ) : (
       <RightMessage key={message.id}>{message.text}</RightMessage>

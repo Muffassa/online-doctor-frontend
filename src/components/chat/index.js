@@ -36,6 +36,7 @@ export const MessageList = styled.ul`
 
 export const MessageBox = styled.li`
   padding: 15px 20px;
+  margin-bottom: 20px;
   max-width: 50%;
   border-radius: 4px;
   background-color: white;
