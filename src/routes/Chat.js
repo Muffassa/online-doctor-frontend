@@ -8,12 +8,15 @@ import PropTypes from 'prop-types';
 import ChatLayout from '../components/ChatLayout';
 
 const Chat = (props) => {
-  const submitMessage = (text) => {
+  const submitMessage = async (text) => {
     const { mutate, match: { params: { patientId } } } = props;
     const refreshToken = Cookies.get('refreshToken');
     const refreshTokenData = jwtDecode(refreshToken);
     const doctorId = refreshTokenData.user.id;
-    mutate({ variables: { patientId, doctorId, text } });
+    const response = await mutate({
+      variables: { receiverId: patientId, senderId: doctorId, text },
+    });
+    console.log(response);
   };
 
   return <ChatLayout onSubmit={submitMessage} {...props} />;
@@ -31,16 +34,18 @@ Chat.propTypes = {
 const getAllPatientsQuery = gql`
   query {
     allPatients {
-      id
-      name
+      user {
+        id
+        email
+      }
     }
   }
 `;
 
 const sendMessage = gql`
-  mutation($doctorId: Int!, $patientId: Int!, $text: String!) {
-    createMessage(doctorId: $doctorId, patientId: $patientId, text: $text) {
-      id
+  mutation($receiverId: Int!, $senderId: Int!, $text: String!) {
+    createMessage(receiverId: $receiverId, senderId: $senderId, text: $text) {
+      ok
     }
   }
 `;

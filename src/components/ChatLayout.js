@@ -39,10 +39,10 @@ export default class ChatLayout extends Component {
           <HeaderText as="h3">Third Header</HeaderText>
           {!loading ? (
             <ul>
-              {allPatients.map(patient => (
-                <li key={patient.id}>
-                  <Link to={`/chat/${patient.id}`} href={`/chat/${patientId}`}>
-                    {patient.name}
+              {allPatients.map(({ user: { id, email } }) => (
+                <li key={id}>
+                  <Link to={`/chat/${id}`} href={`/chat/${id}`}>
+                    {email}
                   </Link>
                 </li>
               ))}
