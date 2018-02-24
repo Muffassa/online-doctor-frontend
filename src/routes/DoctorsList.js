@@ -10,7 +10,7 @@ const DoctorsList = ({ data: { allDoctors, loading } }) => (
     ) : (
       <div>
         <div>Doctors List</div>
-        <ul>{allDoctors.map(({ name, id }) => <li key={id}>{name}</li>)}</ul>
+        <ul>{allDoctors.map(({ user: { email }, id }) => <li key={id}>{email}</li>)}</ul>
       </div>
     )}
   </div>
@@ -30,7 +30,9 @@ const getAllDoctors = gql`
   query {
     allDoctors {
       id
-      name
+      user {
+        email
+      }
     }
   }
 `;
