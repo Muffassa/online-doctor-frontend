@@ -27,6 +27,7 @@ Chat.propTypes = {
     }).isRequired,
   }).isRequired,
 };
+
 const getAllPatientsQuery = gql`
   query {
     allPatients {

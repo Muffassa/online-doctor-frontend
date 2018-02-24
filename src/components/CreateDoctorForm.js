@@ -10,42 +10,6 @@ const CreateDoctorForm = ({
     <Form>
       <Form.Field>
         <input
-          name="name"
-          placeholder="Имя"
-          value={values.name}
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-      </Form.Field>
-      <Form.Field>
-        <input
-          name="familyName"
-          placeholder="Фамилия"
-          value={values.familyName}
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-      </Form.Field>
-      <Form.Field>
-        <input
-          name="patronymic"
-          placeholder="Отчество"
-          value={values.patronymic}
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-      </Form.Field>
-      <Form.Field>
-        <input
-          name="speciality"
-          placeholder="Специальность"
-          value={values.speciality}
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-      </Form.Field>
-      <Form.Field>
-        <input
           name="email"
           type="email"
           placeholder="Эл. адрес"
@@ -60,6 +24,15 @@ const CreateDoctorForm = ({
           type="password"
           placeholder="Пароль"
           value={values.password}
+          onChange={handleChange}
+          onBlur={handleBlur}
+        />
+      </Form.Field>
+      <Form.Field>
+        <input
+          name="speciality"
+          placeholder="Специальность"
+          value={values.speciality}
           onChange={handleChange}
           onBlur={handleBlur}
         />

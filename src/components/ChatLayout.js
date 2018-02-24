@@ -26,7 +26,7 @@ export default class ChatLayout extends Component {
   };
 
   submitMessage = () => {
-    this.onSubmit(this.message);
+    this.props.onSubmit(this.state.message);
   };
 
   render() {
@@ -93,4 +93,5 @@ ChatLayout.propTypes = {
       patientId: PropTypes.number.isRequired,
     }).isRequired,
   }).isRequired,
+  onSubmit: PropTypes.func.isRequired,
 };
