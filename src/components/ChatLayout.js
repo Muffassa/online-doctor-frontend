@@ -1,3 +1,7 @@
+// TODO: Разделить чат лэйаут на:
+// 1. Блок с диалогом
+// 2. Инпутом для ввода сообщения
+// 3. Сайдбаром со списком пользователей
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Header as HeaderText, Input as I, Form } from 'semantic-ui-react';
@@ -17,27 +21,37 @@ export default class ChatLayout extends Component {
   constructor() {
     super();
     this.state = {
-      message: '',
+      text: '',
     };
   }
 
   changeMessage = (e) => {
-    this.setState({ message: e.target.value });
+    this.setState({ text: e.target.value });
   };
 
   submitMessage = () => {
-    this.props.onSubmit(this.state.message);
+    this.props.onSubmit(this.state.text);
+  };
+
+  renderMessage = (message) => {
+    const { match: { params: { patientId } } } = this.props;
+
+    return message.senderId === patientId ? (
+      <LeftMessage key={message.id}>{message.text}</LeftMessage>
+    ) : (
+      <RightMessage key={message.id}>{message.text}</RightMessage>
+    );
   };
 
   render() {
-    const { data: { allPatients, loading }, match: { params: { patientId } } } = this.props;
-    const { message } = this.state;
+    const { data: { allPatients, dialog }, match: { params: { patientId } } } = this.props;
+    const { text } = this.state;
 
     return (
       <AppLayout className="app-layout">
         <SideBar className="channels">
           <HeaderText as="h3">Third Header</HeaderText>
-          {!loading ? (
+          {allPatients ? (
             <ul>
               {allPatients.map(({ user: { id, email } }) => (
                 <li key={id}>
@@ -54,8 +68,7 @@ export default class ChatLayout extends Component {
         <Header className="header">{patientId}</Header>
         <Messages className="messages">
           <MessageList className="message-list">
-            <LeftMessage>Сообщение 1</LeftMessage>
-            <RightMessage>Сообщение 2</RightMessage>
+            {dialog ? dialog.map(message => this.renderMessage(message)) : ''}
           </MessageList>
         </Messages>
         <InputWrapper className="input" onSubmit={this.submitMessage}>
@@ -63,7 +76,7 @@ export default class ChatLayout extends Component {
             placeholder="Сообщение..."
             fluid
             size="big"
-            value={message}
+            value={text}
             onChange={this.changeMessage}
           />
         </InputWrapper>
@@ -86,6 +99,12 @@ ChatLayout.propTypes = {
     allPatients: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.number,
       name: PropTypes.string,
+    })),
+    dialog: PropTypes.arrayOf(PropTypes.shape({
+      text: PropTypes.string,
+      receiverId: PropTypes.number,
+      senderId: PropTypes.number,
+      created_at: PropTypes.string,
     })),
   }).isRequired,
   match: PropTypes.shape({

@@ -31,8 +31,23 @@ Chat.propTypes = {
   }).isRequired,
 };
 
-const getAllPatientsQuery = gql`
-  query {
+const sendMessage = gql`
+  mutation($receiverId: Int!, $senderId: Int!, $text: String!) {
+    createMessage(receiverId: $receiverId, senderId: $senderId, text: $text) {
+      ok
+    }
+  }
+`;
+
+const getAllPatientsAndMessages = gql`
+  query($doctorId: Int!, $patientId: Int!) {
+    dialog(doctorId: $doctorId, patientId: $patientId) {
+      id
+      text
+      receiverId
+      senderId
+      created_at
+    }
     allPatients {
       user {
         id
@@ -42,12 +57,15 @@ const getAllPatientsQuery = gql`
   }
 `;
 
-const sendMessage = gql`
-  mutation($receiverId: Int!, $senderId: Int!, $text: String!) {
-    createMessage(receiverId: $receiverId, senderId: $senderId, text: $text) {
-      ok
-    }
-  }
-`;
-
-export default compose(graphql(getAllPatientsQuery), graphql(sendMessage))(Chat);
+export default compose(
+  graphql(sendMessage),
+  graphql(getAllPatientsAndMessages, {
+    options: (props) => {
+      const { match: { params: { patientId } } } = props;
+      const refreshToken = Cookies.get('refreshToken');
+      const refreshTokenData = jwtDecode(refreshToken);
+      const doctorId = refreshTokenData.user.id;
+      return { variables: { doctorId, patientId } };
+    },
+  }),
+)(Chat);
