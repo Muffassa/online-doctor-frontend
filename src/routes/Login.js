@@ -59,7 +59,7 @@ const loginMutation = gql`
       ok
       token
       refreshToken
-      errors {
+      error {
         message
       }
     }
