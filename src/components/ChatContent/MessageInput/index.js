@@ -3,30 +3,48 @@ import PropTypes from 'prop-types';
 import { withFormik } from 'formik';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-
+import { getDialogQuery } from '../apollo/queries';
 import { MessageInput } from './MessageInput';
 
 const sendMessageMutation = gql`
   mutation($receiverId: Int!, $text: String!) {
     createMessage(receiverId: $receiverId, text: $text) {
-      ok
+      created_at
+      id
+      receiverId
+      senderId
+      text
     }
   }
 `;
 
 export default compose(
+  getContext({ interlocutorId: PropTypes.string }),
   graphql(sendMessageMutation, {
     props: ({ mutate }) => ({
-      sendMessage: (text, receiverId) => mutate({ variables: { text, receiverId } }),
+      sendMessage: (text, receiverId) =>
+        mutate({
+          variables: { text, receiverId },
+          update: (proxy, { data: { createMessage } }) => {
+            const data = proxy.readQuery({
+              query: getDialogQuery,
+              variables: { receiverId },
+            });
+
+            data.dialog.push(createMessage);
+
+            proxy.writeQuery({ query: getDialogQuery, data, variables: { receiverId } });
+          },
+        }),
     }),
   }),
-  getContext({ interlocutorId: PropTypes.string }),
   withFormik({
     mapPropsToValues: () => ({
       message: '',
     }),
-    handleSubmit: async (values, { props: { sendMessage, interlocutorId } }) => {
-      sendMessage(values.message, interlocutorId);
+    handleSubmit: async (values, { props: { sendMessage, interlocutorId }, resetForm }) => {
+      await sendMessage(values.message, interlocutorId);
+      resetForm();
     },
   }),
 )(MessageInput);
