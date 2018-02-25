@@ -10,9 +10,11 @@ const CreatePatient = styled(CreatePatientForm)`
 `;
 
 export const createPatientMutation = gql`
-  mutation($name: String!, $email: String!, $password: String!) {
-    createPatient(name: $name, email: $email, password: $password) {
-      id
+  mutation($age: Int!, $email: String!, $password: String!) {
+    addPatient(age: $age, email: $email, password: $password) {
+      data {
+        id
+      }
     }
   }
 `;
@@ -21,7 +23,7 @@ export default compose(
   graphql(createPatientMutation),
   withFormik({
     mapPropsToValues: () => ({
-      name: '',
+      age: null,
       email: '',
       password: '',
     }),

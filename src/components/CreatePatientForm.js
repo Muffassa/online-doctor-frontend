@@ -10,9 +10,9 @@ const CreatePatientForm = ({
     <Form>
       <Form.Field>
         <input
-          name="name"
-          placeholder="Имя"
-          value={values.name}
+          name="age"
+          placeholder="Возраст"
+          value={values.age}
           onChange={handleChange}
           onBlur={handleBlur}
         />
