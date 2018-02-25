@@ -17,7 +17,7 @@ export default () => (
       <Route path="/doctors/add" component={CreateDoctor} />
       <Route path="/patients/add" component={CreatePatient} />
       <Route path="/login" component={Login} />
-      <Route path="/chat/:interlocutorId?" component={Chat} />
+      <PrivateRoute path="/chat/:interlocutorId?" component={Chat} />
     </div>
   </Router>
 );
