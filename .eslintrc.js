@@ -3,6 +3,7 @@ module.exports = {
   rules: {
     'react/jsx-filename-extension': 0,
     'import/prefer-default-export': 0,
+    'no-return-await': 0,
   },
   env: {
     browser: true,
