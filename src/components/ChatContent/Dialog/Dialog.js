@@ -25,7 +25,7 @@ Dialog.propTypes = {
     senderId: PropTypes.number,
     created_at: PropTypes.string,
   })),
-  interlocutorId: PropTypes.number.isRequired,
+  interlocutorId: PropTypes.string.isRequired,
 };
 
 Dialog.defaultProps = {

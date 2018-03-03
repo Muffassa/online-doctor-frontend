@@ -26,14 +26,12 @@ export default compose(
         mutate({
           variables: { text, receiverId },
           update: (proxy, { data: { createMessage } }) => {
-            const data = proxy.readQuery({
-              query: getDialogQuery,
-              variables: { receiverId },
-            });
-
-            data.dialog.push(createMessage);
-
-            proxy.writeQuery({ query: getDialogQuery, data, variables: { receiverId } });
+            // const data = proxy.readQuery({
+            //   query: getDialogQuery,
+            //   variables: { receiverId },
+            // });
+            // data.dialog.push(createMessage);
+            // proxy.writeQuery({ query: getDialogQuery, data, variables: { receiverId } });
           },
         }),
     }),
