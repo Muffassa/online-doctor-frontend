@@ -53,11 +53,29 @@ export default compose(
       const { subscribeToNewMessages, interlocutorId } = this.props;
       const token = jsCookie.get('refreshToken');
       const { user: { id } } = jwtDecode(token);
-      console.log(id);
-      subscribeToNewMessages({
+      this.unsubscirbe = subscribeToNewMessages({
         receiverId: parseInt(interlocutorId, 10),
         senderId: id,
       });
+    },
+    componentWillReceiveProps(newProps) {
+      if (this.props.interlocutorId === newProps.interlocutorId) {
+        return;
+      }
+
+      const { subscribeToNewMessages, interlocutorId } = newProps;
+      const token = jsCookie.get('refreshToken');
+      const { user: { id } } = jwtDecode(token);
+      if (this.unsubscirbe) {
+        this.unsubscirbe();
+      }
+      this.unsubscribe = subscribeToNewMessages({
+        receiverId: parseInt(interlocutorId, 10),
+        senderId: id,
+      });
+    },
+    componentWillUnmount() {
+      this.unsubscirbe();
     },
   }),
 )(Dialog);
