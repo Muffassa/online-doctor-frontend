@@ -12,7 +12,7 @@ import PrivateRoute from './PrivateRoute';
 export default () => (
   <Router>
     <div>
-      <Route exact path="/" component={Home} />
+      <Route exact path="/" component={Login} />
       <Route path="/doctors/list" component={DoctorsList} />
       <Route path="/doctors/add" component={CreateDoctor} />
       <Route path="/patients/add" component={CreatePatient} />

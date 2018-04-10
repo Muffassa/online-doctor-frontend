@@ -10,14 +10,16 @@ import { getMainDefinition } from 'apollo-utilities';
 
 import Router from './routes';
 
+const serverURL = 'localhost:8081';
+
 const wsLink = new WebSocketLink({
-  uri: 'ws://localhost:8081/subscriptions',
+  uri: `ws://${serverURL}/subscriptions`,
   options: {
     reconnect: true,
   },
 });
 
-const httpLink = new HttpLink({ uri: 'http://localhost:8081/graphql', credentials: 'include' });
+const httpLink = new HttpLink({ uri: `http://${serverURL}/graphql`, credentials: 'include' });
 
 const link = split(
   ({ query }) => {
